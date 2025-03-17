@@ -1,4 +1,6 @@
-export 'package:iltv/widgets/iltv_simple_widget.dart';
+export 'package:iltv/widgets/stateless/iltv_base_stateless_widget.dart';
+export 'package:iltv/widgets/statefull/iltv_simple_stateful_widget.dart';
+
 export 'package:iltv/logics/iltv_base_logic.dart';
 export 'package:iltv/logics/iltv_logic_value.dart';
 export 'package:iltv/procedures/iltv_base_procedures.dart';

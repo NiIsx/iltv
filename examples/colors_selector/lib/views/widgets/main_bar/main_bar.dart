@@ -1,6 +1,6 @@
 import 'package:colors_selector/views/widgets/main_bar/main_bar_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:iltv/widgets/iltv_simple_widget.dart';
+import 'package:iltv/widgets/statefull/iltv_simple_stateful_widget.dart';
 
 class MainBar extends StatelessWidget {
   final MainBarLogic logic;
@@ -13,7 +13,7 @@ class MainBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        IltvSimpleWidget(
+        IltvSimpleStatefulWidget(
           value: logic.counter,
           builder: () => Text('${logic.counter.value}'),
         ),

@@ -1,6 +1,6 @@
 import 'package:colors_selector/views/widgets/elements/top/top_element_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:iltv/widgets/iltv_simple_widget.dart';
+import 'package:iltv/widgets/statefull/iltv_simple_stateful_widget.dart';
 
 class TopElement extends StatelessWidget{
   final TopElementLogic logic;
@@ -9,7 +9,7 @@ class TopElement extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return IltvSimpleWidget(
+    return IltvSimpleStatefulWidget(
       value: logic.color,
       builder: () => Container(
         color: logic.color.value,
