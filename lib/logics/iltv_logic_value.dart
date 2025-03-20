@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
+
 class IltvLogicValue<T>{
   T _value;
   T get value => _value; 
   set value(T newValue) {
-    _isInitialized = true;
+    isInitialized = true;
     _value = newValue;
     if(onUpdated == null){
       throw Exception('"onUpdated" callback in null!');
@@ -10,17 +12,18 @@ class IltvLogicValue<T>{
     onUpdated!();
   }
 
-  bool _isInitialized = false;
+  @protected
+  bool isInitialized = false;
 
   void Function()? onUpdated;
 
   IltvLogicValue(T initValue) : _value = initValue;
 
   void init(T value){
-    if(_isInitialized){
+    if(isInitialized){
       throw Exception('Value already initialized!');
     }
-    _isInitialized = true;
+    isInitialized = true;
     _value = value;
   }
 }

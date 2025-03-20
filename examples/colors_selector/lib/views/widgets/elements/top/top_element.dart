@@ -1,6 +1,6 @@
 import 'package:colors_selector/views/widgets/elements/top/top_element_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:iltv/widgets/statefull/iltv_simple_stateful_widget.dart';
+import 'package:iltv/widgets/stateful/iltv_simple_stateful_widget.dart';
 
 class TopElement extends StatelessWidget{
   final TopElementLogic logic;
