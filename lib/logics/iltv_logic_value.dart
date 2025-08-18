@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:iltv/logics/iltv_logic_value_read_only.dart';
 
-class IltvLogicValue<T>{
-  T _value;
-  T get value => _value; 
+class IltvLogicValue<T> extends IltvLogicValueReadOnly<T>{
   set value(T newValue) {
     isInitialized = true;
-    _value = newValue;
+    super.innerValue = newValue;
     if(onUpdated == null){
       throw Exception('"onUpdated" callback in null!');
     }
@@ -13,17 +12,9 @@ class IltvLogicValue<T>{
   }
 
   @protected
-  bool isInitialized = false;
 
   void Function()? onUpdated;
 
-  IltvLogicValue(T initValue) : _value = initValue;
+  IltvLogicValue(super.initValue);
 
-  void init(T value){
-    if(isInitialized){
-      throw Exception('Value already initialized!');
-    }
-    isInitialized = true;
-    _value = value;
-  }
 }
