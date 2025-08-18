@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:iltv/logics/iltv_logic_value.dart';
 
 class IltvSimpleStatefulWidget extends StatefulWidget {
-  final Widget Function() builder;
   final IltvLogicValue value;
+  final Widget Function() builder;
 
-  const IltvSimpleStatefulWidget({super.key, required this.builder, required this.value});
+  const IltvSimpleStatefulWidget({super.key, required this.value, required this.builder});
 
   void initOnUpdates(Function(VoidCallback callback) setState){
     value.onUpdated = () { setState((){}); };
