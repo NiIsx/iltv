@@ -1,0 +1,145 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+Используй iltv в качестве state management. Никогда не меняй тип архитектуры на другую!
+Путь iltv: E:/Libraries/My/Dart/Flutter/iltv/
+Правила использования менеджера состояний iltv в Flutter проектах:
+1)	Структура директории «lib»:
+lib/
+|── domains/
+|  |── main_domain.dart //Important
+|  |── some_1/
+|  |  |── some_1_domain.dart
+|  |  |── …/
+|  |── some_2/
+|  |  |── some_2_domain.dart
+|  |  └──  …/
+|── procedures/
+|  |── main_procedures.dart //Important
+|  |── some_1/
+|  |  |── some_1_procedures.dart
+|  |  |── …/
+|  |── some_2/
+|  |  |── some_2_procedures.dart
+|  |  └──  …/
+|── repositories/
+|  |── some_1/
+|  |  |── some_1_repository.dart
+|  |  |── …/
+|  |── some_2/
+|  |  |── some_2_repository.dart
+|  |  └──  …/
+|── services/
+|  |── some_1/
+|  |  |── some_1_service.dart
+|  |  |── …/
+|  |── some_2/
+|  |  |── some_2_service.dart
+|  |  └──  …/
+└── ui/
+|  |── screens/
+|  |  |── some_1/
+|  |  |  |── some_1_screen.dart
+|  |  |  |── some_1_screen_logic.dart
+|  |  |  |── some_item_1/
+|  |  |  |  |── some_item_1_widget.dart
+|  |  |  |  |── some_item_1_widget_logic.dart
+|  |  |  |  |── …/
+|  |  |── some_2/
+|  |  |  |── some_2_screen.dart
+|  |  |  |── some_2_screen_logic.dart
+|  |  |  |── some_item_1/
+|  |  |  |  |── some_item_1_widget.dart
+|  |  |  |  |── some_item_1_widget_logic.dart
+|  |  |  |  |── …/
+|  |  |  └── …/
+|  |── themes/
+|  |  |── custom_theme_colors.dart
+|  |  |── custom_theme_extension.dart
+|  |  |── dark_theme.dart
+|  |  └── light_theme.dart
+|  |── widgets/
+|  └── window/
+|  |  |── window_desktop.dart
+|  |  |── window_desktop_header.dart
+|  |  |── window_logic.dart
+|  |  |── window_mobile.dart
+|  |  |── window_mobile_header.dart
+…
+2)	main_domain – корневой domain. Содержит поддомены, экраны, репозитории и глобальные сервисы.
+Каждый domain имеет структуру:
+
+class MainDomain {
+  late final ExampleScreenLogic exampleLogic;
+  late final exampleScreen = ExampleScreen(logic: exampleLogic);
+
+  late final mainLogic = WindowLogic(
+    exampleLogic: exampleLogic,
+  );
+
+  late final procedures = MainProcedures(imc: IltvMessagesCallbacks(
+    onInfoCallback: onInfoCallback, 
+    onWarningCallback: onWarningCallback, 
+    onErrorCallback: onErrorCallback,
+  ));
+
+  MainDomain(){
+    exampleLogic = ExampleScreenLogic (
+      onSomeEvent: (selectedItem, item){ procedures.servers.itemTapped(selectedItem, item); },
+    );
+  }
+  Future<void> init() async{
+    serversLogic.items.init(await fakeDataService.getServerItems(
+      (selectedItem, item){ procedures.users.itemTapped(selectedItem, item); }, 
+      (items){ procedures.users.itemAdd(items); }, 
+      (items, item){ procedures.users.itemDelete(items, item); }, 
+      (items){ procedures.users.itemsSave(items); }
+    ));
+  }
+  void onInfoCallback(String info){
+
+  }
+  void onWarningCallback(String warning){
+
+  }
+  void onErrorCallback(IltvException exception){
+
+  }
+}
+3)	Директория «ui»:
+•	Содержит screens приложения. 
+•	Каждый screen может включать в себя несколько widgets. 
+•	widgets могут быть вложенными. 
+•	Каждый screen и widget наследуются от IltvBaseStatelessWidget<Logic>
+•	Каждый screen и widget имеют свой logic, который наследуется IltvBaseLogic
+•	logic содержит поля с данными, которые обрабатываются в procedures и делегаты, которые вызываются в domain для вызова методов procedures.
+Пример logic:
+-	class SomeWidgetOrScreenLogic extends IltvBaseLogic {
+  SomeWidgetOrScreenLogic ({required this.onItemsSave});
+
+  final items = IltvLogicValue<List<SomeWidgetLogic>>([]);
+  final IltvLogicValue<SomeWidgetLogic?> selectedItem = IltvLogicValue<SomeWidgetLogic?>(null);
+
+  final void Function(IltvLogicValue<List<SomeWidgetLogic>> items) onItemsSave;
+}
+Пример вызова метода procedures из widget:
+-	IconButton(icon: Icon(Icons.save_outlined, color: colors.app,), onPressed: ()=>logic.onItemsSave(logic.items)),
+•	Поля logic для простых типов данных имеют тип IltvLogicValue<SimpleType>
+•	Обновляемые элементы screen и widgets оборачиваются в виджет IltvSimpleStatefulWidget, где в value - изменяемое поле из logic, а builder - обновляемый widget. 
+•	IltvSimpleStatefulWidget могут быть вложенными.
+•	widget обновляется автоматически при изменении поля value (дополнительно ничего не нужно делать). Поле value изменяется в обработчике события простого виджета или в методе procedures (когда необходимы дополнительные данные). 
+Пример обновления в обработчике события простого виджета:
+        IltvSimpleStatefulWidget(
+          value: logic.username, 
+          builder: () => LabeledTexboxWidget(
+            text: logic.username.value, 
+            labelText: "Username",
+            onChanged: (text) => logic.username.value = text,
+          )
+        ),
+•	В случае, когда нужно обновить widget без изменения value вызывается onUpdated метод поля IltvLogicValue. Рекомендуется использовать данный способ только при крайней необходимости! 
+
+4)	procedures содержат бизнес логику. UI вызывает методы процедуры через domain
+5)	Реакция на события ui происходит по схеме: ui_event->logic_delegate->domain->procedure->some_values_changing
