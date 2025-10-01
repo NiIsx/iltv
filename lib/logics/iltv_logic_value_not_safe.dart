@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:iltv/logics/iltv_logic_value_read_only.dart';
 
-class IltvLogicValue<T> extends IltvLogicValueReadOnly<T>{
+class IltvLogicValueNotSafe<T> extends IltvLogicValueReadOnly<T>{ //Not generating exception when onUpdate == null 
   set value(T newValue) {
     isInitialized = true;
     super.innerValue = newValue;
-    if(onUpdated == null){
-      throw Exception('"onUpdated" callback in null!');
+    if(onUpdated != null){
+      onUpdated!();
     }
-    onUpdated!();
   }
 
   @protected
-  IltvLogicValue(super.initValue);
+  IltvLogicValueNotSafe(super.initValue);
 }

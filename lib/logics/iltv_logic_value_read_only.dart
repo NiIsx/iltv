@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:iltv/logics/iltv_base_logic.dart';
 
-class IltvLogicValueReadOnly<T>{
+class IltvLogicValueReadOnly<T> extends IltvBaseLogic{
   @protected T innerValue;
-  T get value => innerValue; 
+  T get value => innerValue;
+  bool get hasCallback => onUpdated != null; 
 
   @protected
   bool isInitialized = false;

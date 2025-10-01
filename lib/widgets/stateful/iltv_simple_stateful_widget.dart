@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:iltv/logics/iltv_logic_value.dart';
+import 'package:iltv/widgets/stateful/multiple_values/iltv_base_stateful_widget.dart';
 
-class IltvSimpleStatefulWidget extends StatefulWidget {
-  final IltvLogicValue value;
-  final Widget Function() builder;
 
-  const IltvSimpleStatefulWidget({super.key, required this.value, required this.builder});
-
-  void initOnUpdates(Function(VoidCallback callback) setState){
-    value.onUpdated = () { setState((){}); };
-  }
+class IltvSimpleStatefulWidget extends IltvBaseStatefulWidget {
+  const IltvSimpleStatefulWidget({super.key, required super.value, required super.builder, Function? onInitState});
 
   @override
   State<IltvSimpleStatefulWidget> createState() => IltvSimpleStatefulWidgetState();
 }
 
 @protected
-class IltvSimpleStatefulWidgetState<T extends IltvSimpleStatefulWidget> extends State<T> {
+class IltvSimpleStatefulWidgetState<T extends IltvSimpleStatefulWidget> extends IltvBaseStatefulWidgetState<T> {
+
+
+
   @override
   Widget build(BuildContext context) {
-    widget.initOnUpdates(setState);
+    isMounted = true;
+
+    widget.value.onUpdated = (){
+      if (isMounted == true){
+        setState((){});         
+      }
+    };
     return widget.builder();
   }
 }
