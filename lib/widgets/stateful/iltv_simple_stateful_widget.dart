@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../src/iltv_logic_value_mixin.dart';
 import 'package:iltv/widgets/stateful/multiple_values/iltv_base_stateful_widget.dart';
 
 
@@ -18,7 +19,7 @@ class IltvSimpleStatefulWidgetState<T extends IltvSimpleStatefulWidget> extends 
   Widget build(BuildContext context) {
     isMounted = true;
 
-    widget.value.onUpdated = (){
+    (widget.value as IltvLogicValueMixin).onUpdated = (){
       if (isMounted == true){
         setState((){});         
       }

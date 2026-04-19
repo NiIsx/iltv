@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   iltv: 
-    path: E:/Libraries/My/Dart/Flutter/iltv/
+    path: ../../../iltv/
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
