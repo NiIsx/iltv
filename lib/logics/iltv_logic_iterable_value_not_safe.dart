@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:iltv/logics/iltv_logic_value_read_only.dart';
 
-class IltvLogicIterableValueNotSafe<T> extends IltvLogicValueReadOnly<T>{ //Not generating exception when onUpdate == null 
+class IltvLogicIterableValueNotSafe<T extends Iterable<E>, E> extends IltvLogicValueReadOnly<T>{
   set value(T newValue) {
     isInitialized = true;
     super.innerValue = newValue;
