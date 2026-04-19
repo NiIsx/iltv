@@ -10,7 +10,6 @@ class IltvLogicIterableValueNotSafe<T extends Iterable<E>, E> extends IltvLogicV
     }
   }
 
-  @protected
   void onRefreshWidget(){
     if(onUpdated != null){
       onUpdated!();
