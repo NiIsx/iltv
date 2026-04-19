@@ -6,6 +6,8 @@ export 'package:iltv/logics/iltv_base_logic.dart';
 export 'package:iltv/logics/iltv_logic_value_read_only.dart';
 export 'package:iltv/logics/iltv_logic_value_not_safe.dart';
 export 'package:iltv/logics/iltv_logic_value.dart';
+export 'package:iltv/logics/iltv_logic_Iterable_value.dart';
+export 'package:iltv/logics/iltv_logic_iterable_value_not_safe.dart';
 export 'package:iltv/logics/iltv_logic_two_values.dart';
 export 'package:iltv/logics/iltv_logic_three_values.dart';
 export 'package:iltv/logics/iltv_logic_four_values.dart';
