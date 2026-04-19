@@ -11,7 +11,6 @@ class IltvLogicIterableValue<T extends Iterable<E>, E> extends IltvLogicValueRea
     onUpdated!();
   }
 
-  @protected
    void onRefreshWidget(){
     if(onUpdated == null){
       throw Exception('"onUpdated" callback in null!');
